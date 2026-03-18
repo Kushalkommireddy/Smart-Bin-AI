@@ -285,7 +285,105 @@ body.dark-mode .clear-history-btn:hover { background: #7f1d1d; }
   border: none;
 }
 
-/* Hide on mobile since the history panel is hidden there anyway */
+/* ==========================================
+   RESPONSIVE & MOBILE OPTIMIZATIONS
+   ========================================== */
+
+/* Tablet & Smaller Desktop */
 @media (max-width: 950px) {
-  .sidebar-bottom { display: none; }
+  .app-container { grid-template-columns: 1fr; gap: 1rem; }
+  .layout-wrapper { flex-direction: column; }
+  
+  /* Transform Sidebar into a Top Navbar */
+  .sidebar { 
+    width: 100%; 
+    height: auto; 
+    min-height: 60px; 
+    flex-direction: row; 
+    border-right: none; 
+    border-bottom: 1px solid var(--border); 
+    padding: 0.8rem 1rem; 
+    align-items: center; 
+    justify-content: space-between; 
+    z-index: 1000;
+  }
+  .sidebar.collapsed { width: 100%; height: 60px; padding: 0.5rem 1rem; }
+  .sidebar-top { margin-bottom: 0; }
+  
+  /* Hide history and clear button on mobile to save space */
+  .history-section, .sidebar-bottom { display: none; }
+  
+  /* Adjust New Scan Button for Top Bar */
+  .new-scan-btn { padding: 0.5rem 1rem; border-radius: 50px; }
+  .sidebar.collapsed .new-scan-btn { 
+    justify-content: center; 
+    padding: 0.5rem 1rem; 
+    border-radius: 50px; 
+    aspect-ratio: auto; 
+  }
+  .sidebar.collapsed .sidebar-text { display: inline-block; }
+  
+  .main-content { padding: 1rem; align-items: flex-start; }
 }
+
+/* Mobile Phones */
+@media (max-width: 600px) {
+  /* Shrink Panel Padding */
+  .panel { padding: 1.2rem; border-radius: 16px; }
+
+  /* Stack Header Elements */
+  .header-flex { 
+    flex-direction: column; 
+    align-items: flex-start; 
+    gap: 1rem; 
+    margin-bottom: 1.5rem; 
+  }
+  .controls-group { 
+    width: 100%; 
+    justify-content: space-between; 
+    background: var(--box-bg);
+    padding: 0.5rem;
+    border-radius: 12px;
+  }
+  
+  /* Resize Typography */
+  .logo-icon { font-size: 2rem; }
+  .brand-title h1 { font-size: 1.6rem; }
+
+  /* Full Width Buttons */
+  .btn-group { flex-direction: column; width: 100%; }
+  .upload-btn { width: 100%; text-align: center; }
+  
+  /* Prevent iOS Input Zoom by setting font-size to 16px */
+  #wasteInput { font-size: 16px; padding: 0.8rem 1rem 0.8rem 2.5rem; }
+
+  /* Adjust Results Header */
+  .category-header { 
+    flex-direction: column; 
+    text-align: center; 
+    gap: 0.8rem; 
+  }
+  .share-btn { 
+    position: static; 
+    width: 100%; 
+    border-radius: 8px; 
+    margin-top: 0.5rem;
+  }
+
+  /* Fix Toast Notifications for Mobile (Slide up from bottom instead of side) */
+  .toast-container { 
+    right: 1rem; 
+    left: 1rem; 
+    bottom: 1rem; 
+  }
+  .toast { 
+    width: 100%; 
+    transform: translateY(120%); 
+    animation: slideUp 0.3s ease forwards;
+  }
+  .toast.fadeOut { animation: fadeDown 0.3s ease forwards; }
+}
+
+/* Mobile Toast Animations */
+@keyframes slideUp { to { transform: translateY(0); } }
+@keyframes fadeDown { to { opacity: 0; transform: translateY(120%); } }
