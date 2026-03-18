@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartBin AI | Intelligent Waste Classification</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="bg-grid"></div>
+  <div class="background-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+
+  <div class="layout-wrapper">
+    
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <button class="icon-btn menu-btn" id="sidebarToggle" title="Toggle Sidebar">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <button class="new-scan-btn" id="newScanBtn" title="Start New Scan">
+        <span class="plus-icon">➕</span>
+        <span class="sidebar-text">New Scan</span>
+      </button>
+
+      <div class="history-section">
+        <p class="history-title sidebar-text">Recent Scans</p>
+        <ul class="history-list" id="historyList">
+          </ul>
+      </div>
+      <div class="history-section">
+        <p class="history-title sidebar-text">Recent Scans</p>
+        <ul class="history-list" id="historyList">
+          </ul>
+      </div>
+
+      <div class="sidebar-bottom">
+        <button class="clear-history-btn" id="clearHistoryBtn" title="Clear History">
+          <span class="btn-icon">🗑️</span>
+          <span class="sidebar-text">Clear History</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="app-container">
+        
+        <div class="panel input-panel">
+          <div class="header header-flex">
+            <div class="logo-group">
+              <div class="logo-icon">♻️</div>
+              <div class="brand-title">
+                <h1>SmartBin <span>AI</span></h1>
+                <p class="tagline">Multimodal Classification</p>
+              </div>
+            </div>
+            <div class="controls-group">
+              <div class="eco-score" title="Your Eco Points">⭐ <span id="scoreTracker">0</span></div>
+              <button id="themeToggle" class="icon-btn" title="Toggle Dark Mode">🌙</button>
+            </div>
+          </div>
+
+          <div class="input-section">
+            <h3>1. Visual Scan (CNN)</h3>
+            
+            <div id="cameraContainer" class="camera-container hidden">
+              <video id="cameraFeed" autoplay playsinline></video>
+              <button id="captureBtn" class="action-btn">📸 Snap Photo</button>
+              <button id="closeCameraBtn" class="icon-btn close-cam">✖</button>
+            </div>
+
+            <div class="upload-zone" id="dropZone">
+              <span class="upload-icon">📁</span>
+              <p class="file-name" id="fileName">Drag & drop a photo</p>
+              <div class="btn-group">
+                <input type="file" id="imageInput" accept="image/*">
+                <label for="imageInput" class="upload-btn">Browse</label>
+                <button id="startCameraBtn" class="upload-btn outline">Use Camera</button>
+              </div>
+            </div>
+            <button class="remove-btn hidden" id="removeFileBtn">🗑 Remove Image</button>
+          </div>
+
+          <div class="divider"><span>OR</span></div>
+
+          <div class="input-section relative">
+            <h3>2. Describe Material (NLP)</h3>
+            <div class="search-wrapper">
+              <span class="search-icon">✎</span>
+              <input type="text" id="wasteInput" placeholder="e.g., Plastic bottle, battery..." autocomplete="off">
+            </div>
+            <ul class="suggestions-list" id="suggestionsList"></ul>
+          </div>
+
+          <button class="analyze-btn" id="analyzeBtn">
+            <span class="btn-icon">✨</span>
+            <span class="btn-text">Analyze Waste</span>
+          </button>
+        </div>
+
+        <div class="panel output-panel">
+          
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon">🤖</div>
+            <h2>Awaiting Input</h2>
+            <p>Provide an image or description to see AI results.</p>
+          </div>
+
+          <div class="loading-state hidden" id="loadingState">
+            <div class="skeleton skeleton-img"></div>
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-bar"></div>
+            <div class="skeleton skeleton-box"></div>
+            <div class="skeleton skeleton-box"></div>
+          </div>
+
+          <div class="results-state hidden" id="resultsState">
+            <div class="preview-container">
+            <img id="previewImage" src="" alt="Waste Preview" class="hidden">
+            <div id="textPreviewContainer" class="text-preview-container hidden">
+              <div id="textPreviewIcon" class="text-preview-icon">📝</div>
+              <h3 id="previewTextDisplay">Text Input</h3>
+            </div>
+            <div class="preview-badge" id="previewBadge">Analysis</div>
+          </div>
+
+          <div class="analysis-details">
+            <div class="category-header">
+              <span class="category-icon" id="catIcon">♻️</span>
+              <div>
+                <p class="label">Classification</p>
+                <h2 id="resultCategory">Recyclable</h2>
+              </div>
+              <button id="shareBtn" class="icon-btn share-btn" title="Share Result">📤</button>
+            </div>
+
+            <div class="confidence-box">
+              <div class="conf-header">
+                <span>AI Confidence</span>
+                <span id="confidenceText">94%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="confidenceFill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="instruction-box">
+              <h3>Dispose in 3 Steps:</h3>
+              <ul id="resultInstruction" class="instruction-steps">
+                </ul>
+            </div>
+
+            <div class="impact-box">
+              <span class="impact-icon">🌍</span>
+              <p id="resultImpact">Impact fact goes here.</p>
+            </div>
+
+            <button id="disposedBtn" class="disposed-btn">
+              <span class="btn-icon">✅</span> Mark as Disposed
+            </button>
+          </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
