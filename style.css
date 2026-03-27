@@ -199,13 +199,20 @@ body.dark-mode .guide-card { background: rgba(30, 41, 59, 0.85); }
   body.dark-mode .mobile-top-bar { background: rgba(30, 41, 59, 0.85); }
   .mobile-brand { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--text-main); }
   .mobile-brand span { font-family: 'Outfit', sans-serif; color: var(--primary); font-style: italic; font-weight: 800; }
+  
   .sidebar { position: fixed; top: 70px; left: 0; width: 280px; height: calc(100vh - 70px); background: var(--surface); z-index: 1999; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 5px 0 25px rgba(0,0,0,0.1); padding: 1.5rem 1.2rem; border-right: none; }
   .sidebar.collapsed { left: -300px; box-shadow: none; }
   .sidebar.collapsed .sidebar-text, .sidebar.collapsed .new-scan-btn { display: flex; }
-  .history-section, .sidebar-bottom { display: block; }
-  .sidebar.collapsed .history-section, .sidebar.collapsed .sidebar-bottom { display: block; }
+  
+  /* Force history and clear button to display inside the mobile drawer */
+  .sidebar .history-section, 
+  .sidebar .sidebar-bottom { 
+    display: block !important; 
+  }
+  
   .mobile-overlay { display: block; position: fixed; top: 70px; left: 0; width: 100%; height: calc(100vh - 70px); background: rgba(0,0,0,0.4); z-index: 1998; opacity: 1; transition: opacity 0.3s ease; }
   .sidebar.collapsed ~ .mobile-overlay { opacity: 0; pointer-events: none; }
+  
   .main-content { padding: 1rem; padding-top: 85px; align-items: flex-start; }
   .header-flex { flex-direction: column; align-items: center; gap: 1rem; margin-bottom: 1.5rem; text-align: center; }
   .controls-group { width: 100%; justify-content: center; background: var(--box-bg); padding: 0.8rem; border-radius: 12px; }
@@ -215,9 +222,11 @@ body.dark-mode .guide-card { background: rgba(30, 41, 59, 0.85); }
   #wasteInput { font-size: 16px; } 
   .category-header { flex-direction: column; text-align: center; gap: 0.8rem; }
   .share-btn { position: static; width: 100%; border-radius: 8px; margin-top: 0.5rem; }
+  
   .toast-container { right: 1rem; left: 1rem; bottom: 1rem; }
   .toast { width: 100%; transform: translateY(120%); animation: slideUp 0.3s ease forwards; }
   .toast.fadeOut { animation: fadeDown 0.3s ease forwards; }
+  
   .guide-header h2 { font-size: 2rem; }
 }
 
